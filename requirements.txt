@@ -1,0 +1,6 @@
+ttkbootstrap
+numpy
+pandas
+pyvi
+gensim
+scikit-learn

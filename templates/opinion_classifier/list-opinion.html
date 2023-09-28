@@ -1,0 +1,104 @@
+{% extends 'base.html' %} {% block contents %}
+<div class="card-title font-title-1 font-color-dark">Thống kê quan điểm</div>
+<div class="card-container">
+  <form action="" method="post" enctype="multipart/form-data">
+    <div class="mb-3">
+      <label for="userOpinion" class="form-label font-color-dark"
+        >Chọn file cần thống kê</label
+      >
+      <input
+        class="form-control"
+        type="file"
+        id="formFile"
+        name="formFile"
+        value=" {{ request['formFile'] }}"
+        accept=".xlsx, .csv"
+      />
+    </div>
+    <button
+      id="btnSubmit"
+      class="btn bg-color-second font-color-light-white"
+      type="submit"
+    >
+      Phân tích
+    </button>
+  </form>
+</div>
+<div class="container-fluid card-result">
+  <div class="row">
+    <div class="col-md-6">
+      <div class="chart-card">
+        <div class="chart-stats">
+          <div class="chart-container">
+            <canvas id="chart-content"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 container-fluid card-result-label">
+      <div class="result-content">
+        <div class="result-header">
+          <h4 class="font-color-dark">Kết quả thống kê</h4>
+        </div>
+        <div class="result-labels font-title-1 font-color-dark">
+          {% if result != None %}
+          <ul>
+            <li class="result-labels-item" style="color: rgb(152, 216, 170)">
+              Positive: {{ result[1] }}
+            </li>
+            <li class="result-labels-item" style="color: rgb(255, 109, 96)">
+              Negative: {{ result[2] }}
+            </li>
+            <li class="result-labels-item" style="color: rgb(247, 208, 96)">
+              Neutral : {{ result[3] }}
+            </li>
+          </ul>
+          {% endif %} {% if result == None %} Không có kết quả thống kê! {%
+          endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="time-analysis"  {% if result[0] == False or result == None %} style="height: 0;" {% endif %}>
+    <div class="chart-card">
+      <div class="chart-stats">
+        <div class="chart-container">
+          <canvas id="line-chart-content"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %} {% block scripts %}
+<script>
+  const chartData = {
+    labels: ["Positive", "Negative", "Neutral"],
+    data: [{{ result[1] }}, {{ result[2] }}, {{ result[3] }}],
+  };
+
+  displayBarChart(chartData);
+
+  {% if result[0] == True %}
+  let lineChartData = {
+    labels: {{ result[4] | safe }},
+    description: "Số lượng quan điểm",
+    dataset: [
+      {
+        label: "Positive",
+        data: {{ result[5]}},
+      },
+      {
+        label: "Negative",
+        data: {{ result[6]}},
+      },
+      {
+        label: "Neutral",
+        data: {{ result[7]}},
+      },
+    ],
+  };
+
+    displayLineChart(lineChartData)
+    {% endif %}
+</script>
+{% endblock %}

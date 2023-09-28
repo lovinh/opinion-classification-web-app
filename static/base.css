@@ -1,0 +1,34 @@
+/* :root{
+
+} */
+.header{
+    display: flex;
+    justify-content: center;
+}
+.flash{
+    padding: 0.5em 1em !important;
+}
+.form-login-regis{
+    display: flex;
+    /* flex-direction: column; */
+    justify-content: center;
+    padding: 2em;
+}
+.main-post{
+    flex-direction: column;
+}
+.content{
+    margin: 2em;
+}
+
+footer{
+    position: fixed;
+    bottom: 0;
+    width: max-content;
+}
+
+@media screen and (max-width: 768px){
+    .content {
+            margin: 0em;
+        }
+}

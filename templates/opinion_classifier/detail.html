@@ -1,0 +1,40 @@
+{% extends 'base.html' %} {% block contents %}
+<div class="card-title font-title-1 font-color-dark">Dự đoán quan điểm</div>
+<div class="card-container">
+  <form action="" method="post">
+    <div class="mb-3">
+      <label for="userOpinion" class="form-label font-color-dark"
+        >Nhập quan điểm cần dự đoán</label
+      >
+      <input
+        type="text"
+        class="form-control"
+        id="userOpinion"
+        name="userOpinion"
+        value="{{ result[0] }}"
+      />
+    </div>
+    <a
+    class="btn bg-color-second font-color-light-white"
+      href="{{ url_for("opinion_classifier.index") }}"
+    >
+      Back
+    </a>
+  </form>
+</div>
+<div class="container-fluid card-result">
+    <div class="display-text font-title-1 font-color-dark">
+        {{ result[1] | safe }}
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+    let content = "{{ result[1] }}";
+    console.log(content);
+</script>
+
+{% endblock %}

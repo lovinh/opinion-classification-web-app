@@ -1,0 +1,70 @@
+{% extends 'base.html' %} {% block contents %}
+<div class="card-title font-title-1 font-color-dark">Dự đoán quan điểm</div>
+<div class="card-container">
+  <form action="" method="post">
+    <div class="mb-3">
+      <label for="userOpinion" class="form-label font-color-dark"
+        >Nhập quan điểm cần dự đoán</label
+      >
+      <input
+        type="text"
+        class="form-control"
+        id="userOpinion"
+        name="userOpinion"
+        value="{{ request.form['userOpinion'] }}"
+      />
+    </div>
+    <button
+      id="btnSubmit"
+      class="btn bg-color-second font-color-light-white"
+      type="submit"
+    >
+      Dự đoán
+    </button>
+  </form>
+</div>
+<div
+  class="container-fluid card-result"
+  style="height: {% if result == None %} 0 {% endif %} {% if result != None %} 100% {% endif %};"
+>
+  <div class="row">
+    <div class="col-md-6 container-fluid card-result-label">
+      <div class="result-content">
+        <div class="result-header">
+          <h4 class="font-color-dark">Kết quả dự đoán</h4>
+        </div>
+        <div class="result-labels font-title-1">{{ result[0] }}</div>
+
+        <a href="{{ url_for("opinion_classifier.opinion_detail", text=request.form['userOpinion']) }}" class="result-detail">Chi tiết</a>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="chart-card">
+        <div class="chart-stats">
+          <div class="chart-container">
+            <canvas id="chart-content"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %} {% block scripts %}
+<script>
+  let chartData = {
+    labels: ["Positive", "Negative", "Neutral"],
+    data: [{{ result[1] }}, {{ result[2] }}, {{ result[3] }}],
+  };
+  displayDoughnutChart(chartData);
+
+  {% if result[0] == "Positive" %}
+  $(".result-labels").css("color", "rgb(152, 216, 170)")
+  {% endif %}
+  {% if result[0] == "Negative" %}
+  $(".result-labels").css("color", "rgb(255, 109, 96)")
+  {% endif %}
+  {% if result[0] == "Neutral" %}
+  $(".result-labels").css("color", "rgb(247, 208, 96)")
+  {% endif %}
+</script>
+{% endblock %}
